@@ -1,5 +1,5 @@
 (function () {
-  'use strict';
+  "use strict";
 
   const icons = {
     call: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1792 1792"><path d="M1792 352v1088q0 42-39 59-13 5-25 5-27 0-45-19l-403-403v166q0 119-84.5 203.5T992 1536H288q-119 0-203.5-84.5T0 1248V544q0-119 84.5-203.5T288 256h704q119 0 203.5 84.5T1280 544v165l403-402q18-19 45-19 12 0 25 5 39 17 39 59z"/></svg>',
@@ -36,7 +36,7 @@
   /**
    * Check if coplay is already started or not supported
    */
-  let id = 'coplay';
+  let id = "coplay";
 
   // Supported websites: Youku, SohuTV, Tudou, TencentVideo, iQiyi, YouTube, ACFun, bilibili, MGTV, Vimeo
   let host = location.host.match(
@@ -45,13 +45,13 @@
   if (!host) {
     return;
   }
-  host = host[1].split('.')[0];
+  host = host[1].split(".")[0];
 
   /**
    * Common utilis
    */
   function getId(part) {
-    return id + '-' + part;
+    return id + "-" + part;
   }
 
   function get(id) {
@@ -76,14 +76,14 @@
     }
   }
 
-  const policy = window.trustedTypes.createPolicy('default', {
+  const policy = window.trustedTypes.createPolicy("default", {
     createHTML: (input) => input,
   });
 
   function create(tagName, parent, props) {
     let elem = document.createElement(tagName);
     for (let prop in props) {
-      if (prop === 'innerHTML') {
+      if (prop === "innerHTML") {
         elem.innerHTML = policy.createHTML(props[prop]);
       } else {
         elem[prop] = props[prop];
@@ -100,9 +100,9 @@
   }
 
   function on(elem, type, listener, noStop) {
-    let prefixes = ['', 'webkit', 'moz'];
+    let prefixes = ["", "webkit", "moz"];
     let prefix = prefixes.find(
-      (prefix) => elem['on' + prefix + type] !== undefined
+      (prefix) => elem["on" + prefix + type] !== undefined
     );
     elem.addEventListener(
       prefix + type,
@@ -119,9 +119,9 @@
   }
 
   function off(elem, type, listener) {
-    let prefixes = ['', 'webkit', 'moz'];
+    let prefixes = ["", "webkit", "moz"];
     let prefix = prefixes.find(
-      (prefix) => elem['on' + prefix + type] !== undefined
+      (prefix) => elem["on" + prefix + type] !== undefined
     );
     elem.removeEventListener(prefix + type, listener);
   }
@@ -159,7 +159,7 @@
       return null;
     }
     for (let key in elem) {
-      if (key.startsWith('__reactInternalInstance$')) {
+      if (key.startsWith("__reactInternalInstance$")) {
         return elem[key]._currentElement._owner._instance;
       }
     }
@@ -184,7 +184,7 @@
       this._player.seek(sec);
     },
     isReady() {
-      return this._player.getProcessState() === 'playstart';
+      return this._player.getProcessState() === "playstart";
     },
     getTime() {
       return this._player.getCurrentTime();
@@ -211,14 +211,14 @@
       this._player.currentTime = sec;
     },
     isReady() {
-      return query('.adtime').textContent === '0';
+      return query(".adtime").textContent === "0";
     },
     getTime() {
       return this._player.currentTime;
     },
     toggleFullscreen() {
       query(
-        `.control-${fullscreen() ? 'half' : 'full'}screen-icon`,
+        `.control-${fullscreen() ? "half" : "full"}screen-icon`,
         this._player.parentNode
       ).click();
     },
@@ -252,7 +252,7 @@
   };
   playerAdapters.iqiyi = {
     prepare() {
-      this._player = query('.iqp-player video');
+      this._player = query(".iqp-player video");
     },
     play() {
       this._player.play();
@@ -264,13 +264,13 @@
       this._player.currentTime = sec;
     },
     isReady() {
-      return !visible(query('.cd-time'));
+      return !visible(query(".cd-time"));
     },
     getTime() {
       return this._player.currentTime;
     },
     toggleFullscreen() {
-      query('.iqp-btn-fullscreen').click();
+      query(".iqp-btn-fullscreen").click();
     },
   };
   playerAdapters.sohu = {
@@ -302,7 +302,7 @@
   };
   playerAdapters.youtube = {
     prepare() {
-      let player = get('movie_player');
+      let player = get("movie_player");
       if (visible(player)) {
         this._player = player;
       }
@@ -346,13 +346,13 @@
       return this._player.currentTime;
     },
     toggleFullscreen() {
-      query('.fullscreen-screen').click();
+      query(".fullscreen-screen").click();
     },
   };
   playerAdapters.bilibili = {
     prepare() {
       if (window.player) {
-        Object.defineProperty(this, '_player', {
+        Object.defineProperty(this, "_player", {
           get() {
             return window.player;
           },
@@ -375,7 +375,7 @@
       return this._player.getCurrentTime();
     },
     toggleFullscreen() {
-      query('.bilibili-player-video-btn-fullscreen').click();
+      query(".bilibili-player-video-btn-fullscreen").click();
     },
   };
   playerAdapters.vimeo = {
@@ -385,7 +385,7 @@
         return;
       }
       if ((this._player = component.getPlayer())) {
-        create('style', document.body, {
+        create("style", document.body, {
           textContent: `#coplay.active #coplay-toggle {
               color: #${this._player.color} !important;
           }
@@ -414,7 +414,7 @@
       return this._player.currentTime;
     },
     toggleFullscreen() {
-      query('.fullscreen').click();
+      query(".fullscreen").click();
     },
   };
   playerAdapters.mgtv = {
@@ -447,8 +447,8 @@
 
   let basePlayer = {
     trigger(type, ...args) {
-      if (typeof this['on' + type] === 'function') {
-        this['on' + type](...args);
+      if (typeof this["on" + type] === "function") {
+        this["on" + type](...args);
       }
     },
     init() {
@@ -461,14 +461,14 @@
         let isFullscreen = !!fsc;
         let container = isFullscreen ? fsc : document.body;
         container.appendChild(coplay.ui.main);
-        coplay.ui.fullscreen.classList.toggle('active', isFullscreen);
-        this.trigger('fullscreenchange', isFullscreen);
+        coplay.ui.fullscreen.classList.toggle("active", isFullscreen);
+        this.trigger("fullscreenchange", isFullscreen);
       };
-      on(document, 'fullscreenchange', this._fullscreenChangeHandler);
-      this.trigger('fullscreeninit');
+      on(document, "fullscreenchange", this._fullscreenChangeHandler);
+      this.trigger("fullscreeninit");
     },
     disposeFullscreen() {
-      off(document, 'fullscreenchange', this._fullscreenChangeHandler);
+      off(document, "fullscreenchange", this._fullscreenChangeHandler);
     },
     toggleFullscreen() {},
   };
@@ -480,7 +480,7 @@
       player.init();
       if (player._player) {
         coplay.player = player;
-        if (typeof done === 'function') {
+        if (typeof done === "function") {
           done();
         }
       } else {
@@ -495,20 +495,20 @@
    * coplay UI
    */
   function initUI() {
-    let main = create('article', document.body, {
+    let main = create("article", document.body, {
       id: id,
-      className: coplayOptions.autoActivate === false ? '' : 'active',
+      className: coplayOptions.autoActivate === false ? "" : "active",
     });
 
-    const DRAGGING_CLASS = 'coplay-dragging';
-    let toggle = create('button', main, {
-      id: getId('toggle'),
-      innerHTML: `${icons['heart']}`,
-      title: 'Click to toggle, drag to move the control bar',
+    const DRAGGING_CLASS = "coplay-dragging";
+    let toggle = create("button", main, {
+      id: getId("toggle"),
+      innerHTML: `${icons["heart"]}`,
+      title: "Click to toggle, drag to move the control bar",
     });
-    on(toggle, 'click', function () {
+    on(toggle, "click", function () {
       if (!main.classList.contains(DRAGGING_CLASS)) {
-        main.classList.toggle('active');
+        main.classList.toggle("active");
       }
     });
     mainDrag = coplayDrag(main, {
@@ -523,93 +523,93 @@
       },
     });
 
-    let local = create('input', main, {
-      id: getId('local'),
-      type: 'text',
-      placeholder: 'Peer ID',
+    let local = create("input", main, {
+      id: getId("local"),
+      type: "text",
+      placeholder: "Peer ID",
       readOnly: true,
     });
-    on(local, 'focus', function () {
+    on(local, "focus", function () {
       this.select();
     });
-    on(local, 'click', () => {});
+    on(local, "click", () => {});
 
-    let remote = create('input', main, {
-      id: getId('remote'),
-      type: 'text',
-      placeholder: 'Remote peer ID',
+    let remote = create("input", main, {
+      id: getId("remote"),
+      type: "text",
+      placeholder: "Remote peer ID",
     });
-    on(remote, 'click', () => {});
+    on(remote, "click", () => {});
 
-    let connect = create('button', main, {
-      id: getId('connect'),
-      innerHTML: `${icons['plug']}`,
+    let connect = create("button", main, {
+      id: getId("connect"),
+      innerHTML: `${icons["plug"]}`,
     });
-    on(connect, 'click', function () {
+    on(connect, "click", function () {
       coplay.connect(remote.value);
     });
 
-    let disconnect = create('button', main, {
-      id: getId('disconnect'),
+    let disconnect = create("button", main, {
+      id: getId("disconnect"),
       hidden: true,
-      innerHTML: `${icons['cancel']}`,
+      innerHTML: `${icons["cancel"]}`,
     });
-    on(disconnect, 'click', function () {
+    on(disconnect, "click", function () {
       coplay.disconnect();
     });
 
-    let play = create('button', main, {
-      id: getId('play'),
-      innerHTML: `${icons['play']}`,
-      title: 'Play',
+    let play = create("button", main, {
+      id: getId("play"),
+      innerHTML: `${icons["play"]}`,
+      title: "Play",
     });
-    on(play, 'click', function () {
+    on(play, "click", function () {
       coplay.player.play();
-      coplay.remote.send(pack('PLAY'));
+      coplay.remote.send(pack("PLAY"));
     });
 
-    let pause = create('button', main, {
-      id: getId('pause'),
-      innerHTML: `${icons['pause']}`,
-      title: 'Pause',
+    let pause = create("button", main, {
+      id: getId("pause"),
+      innerHTML: `${icons["pause"]}`,
+      title: "Pause",
     });
-    on(pause, 'click', function () {
+    on(pause, "click", function () {
       coplay.player.pause();
-      coplay.remote.send(pack('PAUSE'));
+      coplay.remote.send(pack("PAUSE"));
     });
 
-    let sync = create('button', main, {
-      id: getId('sync'),
-      innerHTML: `${icons['sync']}`,
-      title: 'Sync with me',
+    let sync = create("button", main, {
+      id: getId("sync"),
+      innerHTML: `${icons["sync"]}`,
+      title: "Sync with me",
     });
-    on(sync, 'click', function () {
+    on(sync, "click", function () {
       let time = coplay.player.getTime();
       coplay.player.seek(time);
-      coplay.remote.send(pack('SEEK', time));
+      coplay.remote.send(pack("SEEK", time));
     });
 
-    let restart = create('button', main, {
-      id: getId('restart'),
-      innerHTML: `${icons['restart']}`,
-      title: 'Restart',
+    let restart = create("button", main, {
+      id: getId("restart"),
+      innerHTML: `${icons["restart"]}`,
+      title: "Restart",
     });
-    on(restart, 'click', function () {
+    on(restart, "click", function () {
       if (coplay.player.restart) {
         coplay.player.restart();
       } else {
         coplay.player.seek(0.001);
         coplay.player.play();
       }
-      coplay.remote.send(pack('SEEK', 0));
+      coplay.remote.send(pack("SEEK", 0));
     });
 
-    let fullscreen = create('button', main, {
-      id: getId('fullscreen'),
-      innerHTML: `${icons['expand']}${icons['compress']}`,
-      title: 'Toggle fullscreen',
+    let fullscreen = create("button", main, {
+      id: getId("fullscreen"),
+      innerHTML: `${icons["expand"]}${icons["compress"]}`,
+      title: "Toggle fullscreen",
     });
-    on(fullscreen, 'click', function () {
+    on(fullscreen, "click", function () {
       coplay.player.toggleFullscreen();
     });
 
@@ -627,30 +627,30 @@
       fullscreen,
     };
 
-    if (location.protocol === 'https:') {
-      let call = create('button', main, {
-        id: getId('call'),
-        innerHTML: `${icons['call']}`,
-        title: 'Start video call',
-        disabled: true,
+    if (location.protocol === "https:") {
+      let call = create("button", main, {
+        id: getId("call"),
+        innerHTML: `${icons["call"]}`,
+        title: "Start video call",
+        disabled: false,
       });
-      on(call, 'click', function () {
+      on(call, "click", function () {
         coplay.call(coplay.ui.remote.value);
       });
       coplay.ui.call = call;
 
-      let hangUp = create('button', main, {
-        id: getId('hang-up'),
-        innerHTML: `${icons['cancel']}`,
-        hidden: true,
-        title: 'End video call',
+      let hangUp = create("button", main, {
+        id: getId("hang-up"),
+        innerHTML: `${icons["cancel"]}`,
+        hidden: false,
+        title: "End video call",
       });
-      on(hangUp, 'click', function () {
+      on(hangUp, "click", function () {
         coplay.hangUp();
       });
       coplay.ui.hangUp = hangUp;
 
-      create('style', document.body, {
+      create("style", document.body, {
         textContent: `
                     #coplay.active {
                         width: 46em !important;
@@ -681,7 +681,7 @@
   };
 
   function parseURL(url) {
-    let a = create('a', null, {
+    let a = create("a", null, {
       href: url,
     });
 
@@ -696,47 +696,47 @@
 
   function initPeer() {
     if (!window.Peer) {
-      throw new Error('Cannot initialize peer.');
+      throw new Error("Cannot initialize peer.");
     }
 
     let peerOptions = {
       config: {
         // free servers from https://gist.github.com/yetithefoot/7592580
         iceServers: [
-          { url: 'stun:stun.turnservers.com:3478' },
-          { url: 'stun:stun01.sipphone.com' },
-          { url: 'stun:stun.ekiga.net' },
-          { url: 'stun:stun.fwdnet.net' },
-          { url: 'stun:stun.ideasip.com' },
-          { url: 'stun:stun.iptel.org' },
-          { url: 'stun:stun.rixtelecom.se' },
-          { url: 'stun:stun.schlund.de' },
-          { url: 'stun:stun.l.google.com:19302' },
-          { url: 'stun:stun1.l.google.com:19302' },
-          { url: 'stun:stun2.l.google.com:19302' },
-          { url: 'stun:stun3.l.google.com:19302' },
-          { url: 'stun:stun4.l.google.com:19302' },
-          { url: 'stun:stunserver.org' },
-          { url: 'stun:stun.softjoys.com' },
-          { url: 'stun:stun.voiparound.com' },
-          { url: 'stun:stun.voipbuster.com' },
-          { url: 'stun:stun.voipstunt.com' },
-          { url: 'stun:stun.voxgratia.org' },
-          { url: 'stun:stun.xten.com' },
+          { url: "stun:stun.turnservers.com:3478" },
+          { url: "stun:stun01.sipphone.com" },
+          { url: "stun:stun.ekiga.net" },
+          { url: "stun:stun.fwdnet.net" },
+          { url: "stun:stun.ideasip.com" },
+          { url: "stun:stun.iptel.org" },
+          { url: "stun:stun.rixtelecom.se" },
+          { url: "stun:stun.schlund.de" },
+          { url: "stun:stun.l.google.com:19302" },
+          { url: "stun:stun1.l.google.com:19302" },
+          { url: "stun:stun2.l.google.com:19302" },
+          { url: "stun:stun3.l.google.com:19302" },
+          { url: "stun:stun4.l.google.com:19302" },
+          { url: "stun:stunserver.org" },
+          { url: "stun:stun.softjoys.com" },
+          { url: "stun:stun.voiparound.com" },
+          { url: "stun:stun.voipbuster.com" },
+          { url: "stun:stun.voipstunt.com" },
+          { url: "stun:stun.voxgratia.org" },
+          { url: "stun:stun.xten.com" },
           {
-            url: 'turn:numb.viagenie.ca',
-            credential: 'muazkh',
-            username: 'webrtc@live.com',
+            url: "turn:numb.viagenie.ca",
+            credential: "muazkh",
+            username: "webrtc@live.com",
           },
           {
-            url: 'turn:192.158.29.39:3478?transport=udp',
-            credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-            username: '28224511:1379330808',
+            url: "turn:192.158.29.39:3478?transport=udp",
+            credential: "JZEOEt2V3Qb0y27GRntt2u2PAYA=",
+            username: "28224511:1379330808",
           },
           {
-            url: 'turn:192.158.29.39:3478?transport=tcp',
-            credential: 'JZEOEt2V3Qb0y27GRntt2u2PAYA=',
-            username: '28224511:1379330808',
+            url: "turn:192.158.29.39:3478?transport=tcp",
+            credential: "JZEOEt2V3Qb0y27GRntt2u2PAYA=",
+            username: "28224511:1379330808",
           },
         ],
       },
@@ -752,7 +752,7 @@
       peerOptions.path = url.path || undefined;
       peerOptions.port = url.port || undefined;
 
-      if (url.protocol === 'https:') {
+      if (url.protocol === "https:") {
         peerOptions.secure = true;
       }
       if (coplayOptions.key) {
@@ -762,13 +762,13 @@
 
     let peer = new Peer(peerOptions);
 
-    peer.on('open', function (id) {
+    peer.on("open", function (id) {
       coplay.ui.local.value = id;
     });
 
-    peer.on('connection', connect);
+    peer.on("connection", connect);
 
-    peer.on('call', call);
+    peer.on("call", call);
 
     coplay.peer = peer;
   }
@@ -781,14 +781,14 @@
   function prepareMedia(media) {
     coplay.media = media;
     let ui = coplay.ui;
-    media.on('stream', (stream) => {
-      ui.remoteVideo.src = window.URL.createObjectURL(stream);
+    media.on("stream", (stream) => {
+      ui.remoteVideo.srcObject = stream;
       ui.localVideo.hidden = false;
       ui.remoteVideo.hidden = false;
       ui.call.hidden = true;
       ui.hangUp.hidden = false;
     });
-    media.on('close', () => {
+    media.on("close", () => {
       ui.localVideo.hidden = true;
       ui.remoteVideo.hidden = true;
       ui.call.hidden = false;
@@ -821,24 +821,24 @@
 
     function heartBeat() {
       start = Date.now();
-      c.send(pack('REQ'));
+      c.send(pack("REQ"));
     }
 
     function checkPath() {
-      c.send(pack('CHECK'));
+      c.send(pack("CHECK"));
     }
 
     function getPath() {
       return location.host + location.pathname;
     }
 
-    c.on('data', function (p) {
+    c.on("data", function (p) {
       let player = coplay.player;
       switch (p.type) {
-        case 'REQ':
-          c.send(pack('ACK'));
+        case "REQ":
+          c.send(pack("ACK"));
           break;
-        case 'ACK':
+        case "ACK":
           round = Date.now() - start;
           count++;
           elapsed += round;
@@ -846,25 +846,25 @@
             heartBeat(c);
           }, 1000);
           break;
-        case 'CHECK':
-          c.send(pack('PATH', getPath()));
+        case "CHECK":
+          c.send(pack("PATH", getPath()));
           break;
-        case 'PATH':
+        case "PATH":
           if (p.data !== getPath()) {
-            console.error('Not on the same page.');
+            console.error("Not on the same page.");
             c.close();
           }
           break;
-        case 'MSG':
-          console.log('Remote: ' + p.data);
+        case "MSG":
+          console.log("Remote: " + p.data);
           break;
-        case 'SEEK':
+        case "SEEK":
           player.seek(parseInt(p.data, 10));
           break;
-        case 'PAUSE':
+        case "PAUSE":
           player.pause();
           break;
-        case 'PLAY':
+        case "PLAY":
           player.play();
           break;
       }
@@ -873,8 +873,8 @@
     heartBeat();
     checkPath();
 
-    c.on('close', function () {
-      ui.remote.value = '';
+    c.on("close", function () {
+      ui.remote.value = "";
       ui.remote.disabled = false;
       ui.connect.hidden = false;
       ui.disconnect.hidden = true;
@@ -913,12 +913,12 @@
 
   coplay.connect = function (remote) {
     let c = coplay.peer.connect(remote, {
-      label: 'coplay',
-      serialization: 'json',
+      label: "coplay",
+      serialization: "json",
       reliable: false,
     });
 
-    c.on('open', function () {
+    c.on("open", function () {
       connect(c);
     });
   };
@@ -931,36 +931,40 @@
     coplay.hangUp();
   };
 
-  function getUserMedia(...args) {
-    let method = getDefined(
-      navigator.getUserMedia,
-      navigator.webkitGetUserMedia,
-      navigator.mozGetUserMedia
-    );
-    if (!method) {
-      return null;
-    }
+  // function getUserMedia(...args) {
+  //   let method = getDefined(
+  //     navigator.getUserMedia,
+  //     navigator.webkitGetUserMedia,
+  //     navigator.mozGetUserMedia
+  //   );
+  //   if (!method) {
+  //     return null;
+  //   }
 
-    return method.apply(navigator, args);
-  }
+  //   return method.apply(navigator, args);
+  // }
+  var getUserMedia =
+    navigator.getUserMedia ||
+    navigator.webkitGetUserMedia ||
+    navigator.mozGetUserMedia;
 
   function initVideoCallPlayers() {
     if (coplay.ui.localVideo) {
       return;
     }
-    let remoteVideo = create('video', document.body, {
-      id: 'coplay-remote-video',
+    let remoteVideo = create("video", document.body, {
+      id: "coplay-remote-video",
       autoplay: true,
     });
-    let localVideo = create('video', document.body, {
-      id: 'coplay-local-video',
+    let localVideo = create("video", document.body, {
+      id: "coplay-local-video",
       autoplay: true,
       muted: true,
     });
     coplayDrag(remoteVideo);
     coplayDrag(localVideo);
     Object.assign(coplay.ui, { remoteVideo, localVideo });
-    on(document, 'fullscreenchange', function () {
+    on(document, "fullscreenchange", function () {
       if (remoteVideo.src) {
         remoteVideo.play();
       }
@@ -970,41 +974,40 @@
     });
   }
 
-  coplay.call = function (remote) {
-    getUserMedia(
-      {
-        video: true,
-        audio: true,
-      },
-      (stream) => {
-        coplay.stream = stream;
-        initVideoCallPlayers();
-        coplay.ui.localVideo.src = window.URL.createObjectURL(stream);
-        if (typeof remote === 'string') {
-          // peer id
-          let media = coplay.peer.call(remote, stream);
-          prepareMedia(media);
-        } else {
-          // MediaConnection
-          remote.answer(stream);
-        }
-      },
-      (err) => console.error
-    );
-  };
+  (coplay.call = function (remote) {
+    console.log("call", remote);
 
-  coplay.hangUp = function () {
-    if (coplay.media) {
-      coplay.media.close();
+    let videoEl = document.querySelector(
+      "#movie_player > div.html5-video-container > video"
+    );
+
+    let stream = videoEl.captureStream();
+    console.log("got stream", stream);
+    coplay.stream = stream;
+    initVideoCallPlayers();
+    coplay.ui.localVideo.srcObject = stream;
+    if (typeof remote === "string") {
+      // peer id
+      let media = coplay.peer.call(remote, stream);
+      prepareMedia(media);
+    } else {
+      // MediaConnection
+      remote.answer(stream);
     }
-  };
+  }),
+
+    (coplay.hangUp = function () {
+      if (coplay.media) {
+        coplay.media.close();
+      }
+    });
 
   window.coplay = coplay;
 
   /**
    * Get options and start
    */
-  let coplayOptions = JSON.parse(document.body.dataset['coplayOptions']);
+  let coplayOptions = JSON.parse(document.body.dataset["coplayOptions"]);
   if (coplayOptions.autoActivate) {
     coplay.init();
   }
