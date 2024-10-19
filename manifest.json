@@ -1,14 +1,12 @@
 {
-  "manifest_version": 2,
-  "name": "Coplay-forked",
+  "manifest_version": 3,
+  "name": "coplay-repaired",
   "description": "Synchronize online video playing between peers.",
-  "version": "0.6.1",
+  "version": "0.7.1",
   "icons": {
     "128": "coplay.png"
   },
-  "permissions": [
-    "storage"
-  ],
+  "permissions": ["storage"],
   "content_scripts": [
     {
       "matches": [
@@ -33,24 +31,16 @@
         "http://*.vimeo.com/*",
         "https://*.vimeo.com/*"
       ],
-      "js": [
-        "inject.js"
-      ]
+      "js": ["inject.js"]
     }
   ],
   "web_accessible_resources": [
-    "peer.js",
-    "drag.js",
-    "coplay.js",
-    "coplay.css"
-  ],
-  "browser_action": {
-    "default_icon": {
-      "128": "coplay.png"
+    {
+      "resources": ["lib/peer.js", "lib/drag.js", "coplay.js", "coplay.css"],
+      "matches": ["*://*/*"]
     }
-  },
+  ],
   "options_ui": {
-    "page": "options.html",
-    "chrome_style": true
+    "page": "options.html"
   }
 }

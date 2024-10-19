@@ -28,7 +28,7 @@
   }
 
   function url(file) {
-    return chrome.extension.getURL(file);
+    return chrome.runtime.getURL(file);
   }
 
   function data(key, value) {
@@ -56,8 +56,8 @@
     } else {
       data('coplay', true);
       loadStyle(url('coplay.css'));
-      loadScript(url('peer.js'), () => {
-        loadScript(url('drag.js'), () => {
+      loadScript(url('lib/peer.js'), () => {
+        loadScript(url('lib/drag.js'), () => {
           loadScript(url('coplay.js'));
         });
       });
